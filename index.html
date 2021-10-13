@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+</head>
+<body>
+    <h2 style="text-align: center;">Annual Distribution of Fatalities by Age Group</h2>
+    <div>
+        <canvas id="chart" width="400" height="400"></canvas>
+    </div>
+    
+    <script>
+        const xlabels = [];
+        const ytemps = [];
+        const ytempsTwo = [];
+        const ytempsThree = [];
+        const ytemspFour = []; 
+        chartIt()
+
+        async function chartIt() {
+        getData();
+        const ctx = document.getElementById('chart').getContext('2d');
+const myChart = new Chart(ctx, {
+   // type: 'line',
+    data: {
+        labels: xlabels,
+        datasets: [{
+            label: 'Age Group (0 - 5) Years',
+            data: ytemps,
+            type: 'line',
+            fill: false,
+            borderColor: 'rgba(255, 206, 86, 1)',
+            tension: 0.1,
+            borderWidth: 2
+        },
+        {
+            label: 'Age Group (6 - 15) Years',
+            data: ytempsTwo,
+            type: 'line',
+            fill: false,
+            borderColor: 'rgba(255, 99, 132, 1)',
+            tension: 0.1,
+            borderWidth: 2
+        },
+        {
+            label: 'Age Group (16 - 25) Years',
+            data: ytempsThree,
+            type: 'line',
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1,
+            borderWidth: 2
+        },
+        {
+            label: 'Age Group (26 - 35) Years',
+            data: ytemspFour,
+            type: 'line',
+            fill: false,
+            borderColor: 'rgba(54, 162, 235, 1)',
+            tension: 0.1,
+            borderWidth: 2
+        }
+    ]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: false
+            }
+        }
+    }
+});
+        }
+
+        
+        async function getData() {
+           const response = await fetch('Annual Distribution of Fatalities by Age Group.csv');
+           const data = await response.text();
+           //console.log(data);
+
+           const table = data.split('\n').slice(1);
+           table.forEach(row => {
+                const columns = row.split(',');
+                const year = columns[0];
+                const temp = columns[1];
+                const tempTwo = columns[2];
+                const tempThree = columns[3];
+                const tempFour = columns[4];
+                xlabels.push(year);
+                ytemps.push(parseFloat(temp) + 14);
+                ytempsTwo.push(tempTwo);
+                ytempsThree.push(tempThree);
+                ytemspFour.push(tempFour);
+
+                console.log(year, temp, tempTwo);
+           });
+        }
+
+
+
+    </script>
+</body>
+</html>
